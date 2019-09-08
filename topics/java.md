@@ -64,7 +64,7 @@ double  | 64 bit | 8 Byte
     - not really memory leaks:
         - Can be created by some hacks involving `ThreadLocal`, [see link](http://stackoverflow.com/questions/6470651/creating-a-memory-leak-with-java)
         - Static final fields
-        - `myString.intern()` – places string in memory pool that can't be removed
+        - `myString.intern()` – places string in memory pool that can't be removed (and interned strings are in PermGen)
         - Unclosed open streams (file, network, etc.) or connections
         - Native hooks that aren't accessible to GC
         - Misuse of JVM options (parameters)
