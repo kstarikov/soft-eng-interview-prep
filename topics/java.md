@@ -60,13 +60,14 @@ double  | 64 bit | 8 Byte
 - Cyclic dependencies aren't references, and they will be GCed if no other objects have a reference to any of them.
 - GC scenarios: all references to an object are set to null, object declared in a block and now out of scope, object is a member and the parent is eligible for GC, object in a `WeakHashMap`.
 - Java memory leaks:
-    - Can be created by some hacks involving `ThreadLocal`, [see link](http://stackoverflow.com/questions/6470651/creating-a-memory-leak-with-java)
-    - Static final fields
-    - `myString.intern()` – places string in memory pool that can't be removed
-    - Unclosed open streams (file, network, etc.) or connections
-    - Native hooks that aren't accessible to GC
-    - Misuse of JVM options (parameters)
-    - `HashSet`/`Map` which uses incorrect `hashCode`, so elements are always added
+    - memory allocated through native methods is not accessible to GC
+    - not really memory leaks:
+        - Can be created by some hacks involving `ThreadLocal`, [see link](http://stackoverflow.com/questions/6470651/creating-a-memory-leak-with-java)
+        - Static final fields
+        - `myString.intern()` – places string in memory pool that can't be removed
+        - Unclosed open streams (file, network, etc.) or connections
+        - Native hooks that aren't accessible to GC
+        - Misuse of JVM options (parameters)
 - [Available garbage collectors](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/collectors.html) and how to select one.
 
 ## Common JVM Options
@@ -177,8 +178,43 @@ Modifier      | Class | Package | Subclass | World
     - Passed as a parameter to a method that expects an object/primitive of the corresponding wrapper/primitive type.
     - Assigned to a variable of the corresponding wrapper/primitive type.
 - The compiler uses `valueOf` to autobox and `intValue` to unbox (for `int`, for example).
+- `Integer.valueOf` can cache values (it's easy to tell whether or not a value has been cached, based on reference equality)
 - Beware of unnecessary Object creation with autoboxing/unboxing.
 - Object types don't support operators (`+` for example), so using it on `Integer` will trigger unboxing and then autoboxing.
 - For arithmetics always prefer primitives.
 - Equality checks with `==` don't unbox and so reference are compares, not values. So to compare two `Integer`s use `.equals()` or preferrable use primitive types.
 - You can get `NullPointerException`s when unboxing.
+
+## Comparing
+   - `new Comparator<String>() {public int compare(String s1, String s2){}}`
+   - lambdas when creating an object `new PriorityQueue<>((a,b) -> a.compare(b));`
+     
+## Iterator
+   - `iter.hasNext()`
+
+## Data structures
+
+### BitSet
+    - each element is a boolean with 1-bit size (not 8-bit as regular booleans)
+    - a vector of bits that grows as needed
+    - bit ops: get / set / flip / clear
+    - other sets ops: and / intersects / or / xor
+
+### PriorityQueue
+    - no ordered traversals (use `Arrays.sort(pq.toArray())`)
+    - not synchronised (use PriorityBlockingQueue)
+
+### Map
+    + MapEntry
+    - getKey() / getValue()
+
+### TreeMap 
+    - is a Red-Black tree
+      
+### HashMap
+    - the size of a HashMap is always a power of 2, for the bit-mask (modulo equivalent) to be effective
+    - can store bins as trees in addition to linked lists (more than 8 objects get converted to a red-black tree)
+
+### LinkedHashMap
+    - preserves the insertion order — an iteration through a LinkedHashMap visits keys in the order they were inserted
+
