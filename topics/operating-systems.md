@@ -17,9 +17,8 @@
 ## Mutexes, Semaphores, Locks
 
 - *Lock* is a generic term for an object that works like a key and allows the access to a target object only by one thread. Only the thread which owns the key can unlock the "door".
-- *Monitor* is a *cross-thread* lock.
-    - In Java every object is a monitor.
-- Lock allows only one thread to enter the part that's locked and the lock is not shared with any other processes.
+- A *monitor* is a mechanism that ensures that only one thread can be executing a given section (or sections) of code at any given time. is a *cross-thread* lock.
+    - In Java every object has a monitor associated with it.
 - Mutex and Semaphore are kernel resources that provide synchronization services.
 
 #### Mutex
