@@ -17,6 +17,13 @@
 - Factor in plural form, present/past tenses, etc.
 - Sort by score, descending.
 
+# Spell checker (another version)
+   - generate a table of word mistakes based on Levenshtein distance
+   - Typing errors model: often spelling mistakes are a result of typing errors. Typing errors can be modeled based on keyboard layouts.
+   - Phonetic modeling: map the text to phonemes and then find all the words that map to the same phonetic sequence
+   - history of refinements: users first enter a misspelled word and then correct it giving data for spelling correction
+   - stemming (includes stemming of the query) (Porter Stemmer for English, for example) 
+
 ## Search Engine
 
 - Separate the system to different parts:
