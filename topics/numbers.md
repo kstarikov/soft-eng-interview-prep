@@ -56,6 +56,8 @@ Period | Seconds
 1 day  | `86K`
 1 year | `30M`
 
+100 million requests per day = 1200 rps
+
 ## Powers of 2
 
 Power | Size          | Kibi

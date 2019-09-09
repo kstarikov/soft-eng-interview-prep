@@ -17,7 +17,7 @@
 
 Type    | bits   | Bytes
 --------|--------|-------
-boolean | 1 bit  | 1 Byte
+boolean | 1 bit  | 1 Byte * the actual size in memory is platform specific
 byte    | 8 bit  | 1 Byte
 short   | 16 bit | 2 Byte
 char    | 16 bit | 2 Byte
@@ -29,7 +29,7 @@ double  | 64 bit | 8 Byte
 - Memory reference (pointer): 4 Bytes.
 - Object header: a few Bytes (~8 Bytes) for housekeeping info (GC, class, id, etc.).
 - Array header: 12 Bytes (4 Bytes for array length).
-- `BitSet` – a bit vector with growing size, each element is a boolean with 1-bit size (not 8-bit as regular booleans).
+- `BitSet` – a bit vector with growing size, each element is a boolean with 1-bit size (not platform specific as regular booleans).
 - Thread stacks are allocated *outside* the heap. The heap only stores objects.
 - Thread stacks contain local variables (primitives, heap references) and calls to methods. Sometimes the JVM optimizes and allocates objects that never leave the stack scope on the stack (function-local objects).
 - Arrays are like Objects, and are generally stored on the heap.
@@ -62,12 +62,12 @@ double  | 64 bit | 8 Byte
 - Java memory leaks:
     - memory allocated through native methods is not accessible to GC
     - not really memory leaks:
-        - Can be created by some hacks involving `ThreadLocal`, [see link](http://stackoverflow.com/questions/6470651/creating-a-memory-leak-with-java)
+        - Can be created by some hacks involving `ThreadLocal` [see link](http://stackoverflow.com/questions/6470651/creating-a-memory-leak-with-java)
         - Static final fields
-        - `myString.intern()` – places string in memory pool that can't be removed (and interned strings are in PermGen)
         - Unclosed open streams (file, network, etc.) or connections
         - Native hooks that aren't accessible to GC
         - Misuse of JVM options (parameters)
+        - leaking threads is using off-heap memory (they have 256kb or more stack space per thread)
 - [Available garbage collectors](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/collectors.html) and how to select one.
 
 ## Common JVM Options
@@ -133,7 +133,7 @@ int minusFive  = 0b11111111111111111111111111111011;
 ### Interning
 
 - String literals, i.e.`String s = "hello"`, are interned by the compiler.
-- Interned strings are privately maintained in a pool, which is initially empty, by the class `String`.
+- Interned strings are privately maintained in a pool (in main heap), which is initially empty, by the class `String`.
 - The `public String intern()` function on `String` places that instance in the pool and returns the canonical representation for that string object.
 - When the `intern` method is invoked, if the pool already contains a string equal to this `String` object as determined by the `equals(Object)` method, then the string from the pool is returned.
 - Otherwise, this `String` object is added to the pool and a reference to this `String` object is returned.
