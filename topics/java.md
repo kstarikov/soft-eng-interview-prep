@@ -73,7 +73,7 @@ double  | 64 bit | 8 Byte
 ## Common JVM Options
 
 - `-Xms1g` – Initial heap size
-- `-Xmx2g` – Hax heap size
+- `-Xmx2g` – Max heap size
 - `-XX:MaxMetaspaceSize=200m` – Add a limit to Metaspace (not limited by default)
 - `-Xmn500m` – Initial *and* max young gen size
 - `-XX:SurvivorRatio=4` – Ratio of survivor size relatively to eden size (ratio = young/survivor - 2)
@@ -210,11 +210,22 @@ Modifier      | Class | Package | Subclass | World
 
 ### TreeMap 
     - is a Red-Black tree
-      
+
+### TreeSet
+    - A NavigableSet implementation based on a TreeMap
+    - The elements are ordered using their natural ordering, or by a Comparator provided at set creation time
+    - log(n) time cost for the basic operations (add, remove and contains)
+
 ### HashMap
     - the size of a HashMap is always a power of 2, for the bit-mask (modulo equivalent) to be effective
     - can store bins as trees in addition to linked lists (more than 8 objects get converted to a red-black tree)
+    - is not syncronised
+    - allows one null key and any number of null values
+
+### HashTable
+    - only use when legacy code requires it
+    - is syncronised
+    - does not allow null keys or values
 
 ### LinkedHashMap
     - preserves the insertion order — an iteration through a LinkedHashMap visits keys in the order they were inserted
-
