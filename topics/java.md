@@ -205,11 +205,12 @@ Modifier      | Class | Package | Subclass | World
     - not synchronised (use PriorityBlockingQueue)
 
 ### Map
-    + MapEntry
+    - MapEntry
     - getKey() / getValue()
 
 ### TreeMap 
     - is a Red-Black tree
+    - keys are ordered (and iteration over them is in order)
 
 ### TreeSet
     - A NavigableSet implementation based on a TreeMap
@@ -223,9 +224,15 @@ Modifier      | Class | Package | Subclass | World
     - allows one null key and any number of null values
 
 ### HashTable
-    - only use when legacy code requires it
+    - Obsolete. Only use when legacy code requires it
     - is syncronised
     - does not allow null keys or values
 
 ### LinkedHashMap
     - preserves the insertion order — an iteration through a LinkedHashMap visits keys in the order they were inserted
+
+### ConcurrentHashMap
+    - fully interoperable with Hashtable
+    - reads are lockless
+    - iterators are designed to be used by only one thread at a time
+    - does not allow null keys or values
